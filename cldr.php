@@ -42,8 +42,8 @@ try {
 			}, $scripts):[$abbr]
 		);
 	}
-
-	array_walk($langSet, function($lang, $langAbbr) use ($dataSource){
+	$result = [];
+	array_walk($langSet, function($lang, $langAbbr) use ($dataSource, &$result){
 		foreach ($lang as $langAbbrScript){
 			$territoryNodes = $dataSource->xpath('/supplementalData/territoryInfo/territory[languagePopulation[@type="'.$langAbbrScript.'"]]');
 			if($territoryNodes) {
@@ -53,13 +53,18 @@ try {
 					if($langPercentNode = $territoryNode->xpath('languagePopulation[@type="'.$langAbbrScript.'"]/@populationPercent')){
 						list($langPercent) = $langPercentNode;
 						$langPercent = (float)$langPercent;
+						if(!isset($result[$langAbbr])) $result[$langAbbr] = 0;
 
-						echo $langAbbr,'[',$langPercent,'-',$population, ']',' ', round($population * $langPercent),"\r\n";
+						$result[$langAbbr] += round($population * $langPercent);
 					}
 				}
 			}
 		}
 	});
+
+	foreach($result as $langAbbr => $langUsageNumber){
+		echo $langAbbr, ', ',locale_get_display_language($langAbbr), ', ', $langUsageNumber,"\r\n";
+	}
 
 
 } catch ( Exception $e ) {
