@@ -10,3 +10,4 @@ fabric.properties
 composer.phar
 composer.lock
 /vendor/
+supplementalData.xml
