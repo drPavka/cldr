@@ -1,0 +1,10 @@
+{
+    "name": "pavka/cldr",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6",
+        "ext-intl": "*",
+        "ext-SimpleXML": "*"
+    }
+}
